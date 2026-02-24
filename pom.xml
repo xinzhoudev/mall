@@ -30,7 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <skipTests>true</skipTests>
+        <!-- <skipTests>true</skipTests> -->
         <docker.host>http://192.168.3.101:2375</docker.host>
         <docker.maven.plugin.version>0.40.2</docker.maven.plugin.version>
         <pagehelper-starter.version>1.4.5</pagehelper-starter.version>
@@ -209,6 +209,13 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                 </plugin>
+
+                <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.12.1</version>
+                </plugin>
+
                 <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
@@ -251,12 +258,87 @@
                                 </build>
                             </image>
                         </images>
+                        
                     </configuration>
                 </plugin>
-
             </plugins>
         </pluginManagement>
+
+        <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-report-plugin</artifactId>
+            <version>2.22.2</version>
+            <configuration>
+                <aggregate>true</aggregate>
+            </configuration>
+        </plugin>
+        <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version>
+        <executions>
+            <execution>
+                <id>prepare-agent</id>
+                <goals>
+                    <goal>prepare-agent</goal>
+                </goals>
+            </execution>
+
+            <execution>
+                <id>merge-exec</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                    <goal>merge</goal>
+                </goals>
+                <configuration>
+                    <destFile>${project.build.directory}/jacoco-merged.exec</destFile>
+                    <failOnMissingFile>false</failOnMissingFile>
+                    <fileSets>
+                        <!-- 这里保持你的 fileSets 不变 -->
+                    </fileSets>
+                </configuration>
+            </execution>
+
+            <execution>
+                <id>report-aggregate</id>
+                <phase>verify</phase>
+                <goals>
+                    <goal>report-aggregate</goal>
+                </goals>
+                <configuration>
+                    <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+                    <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
+                    <sourceDirectories>
+                        <directory>${project.basedir}/mall-admin/src/main/java</directory>
+                        <directory>${project.basedir}/mall-common/src/main/java</directory>
+                        <directory>${project.basedir}/mall-demo/src/main/java</directory>
+                        <directory>${project.basedir}/mall-mbg/src/main/java</directory>
+                        <directory>${project.basedir}/mall-search/src/main/java</directory>
+                        <directory>${project.basedir}/mall-portal/src/main/java</directory>
+                        <directory>${project.basedir}/mall-security/src/main/java</directory>
+                    </sourceDirectories>
+                    <classDirectories>
+                        <directory>${project.basedir}/mall-admin/target/classes</directory>
+                        <directory>${project.basedir}/mall-common/target/classes</directory>
+                        <directory>${project.basedir}/mall-demo/target/classes</directory>
+                        <directory>${project.basedir}/mall-mbg/target/classes</directory>
+                        <directory>${project.basedir}/mall-search/target/classes</directory>
+                        <directory>${project.basedir}/mall-portal/target/classes</directory>
+                        <directory>${project.basedir}/mall-security/target/classes</directory>
+                    </classDirectories>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+
+    </plugins>
     </build>
+
+    
+
+
+
 
     <!--使用aliyun的Maven镜像源提升下载速度-->
     <repositories>

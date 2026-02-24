@@ -24,5 +24,4 @@ public class MallDemoApplicationTests {
 		logger.info(mapper.writeValueAsString(product));
 		logger.error(mapper.writeValueAsString(product));
 	}
-
 }

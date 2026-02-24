@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/order")
 public class OmsOrderController {
     @Autowired
-    private OmsOrderService orderService;
+    public OmsOrderService orderService;
 
     @ApiOperation("查询订单")
     @RequestMapping(value = "/list", method = RequestMethod.GET)

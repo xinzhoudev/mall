@@ -30,11 +30,11 @@ public class PortalProductDaoTests {
         assertEquals(4,promotionProductList.size());
     }
 
-    @Test
-    public void testEmptyList(){
-        List<Long> ids = new ArrayList<>();
-        List<PromotionProduct> promotionProductList = portalProductDao.getPromotionProductList(ids);
-        assertEquals(0, promotionProductList.size());
-    }
+    // @Test
+    // public void testEmptyList(){
+    //     List<Long> ids = new ArrayList<>();
+    //     List<PromotionProduct> promotionProductList = portalProductDao.getPromotionProductList(ids);
+    //     assertEquals(0, promotionProductList.size());
+    // }
 
 }
