@@ -17,10 +17,9 @@
         <artifactId>mall</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
-     <properties>
+    
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
@@ -42,6 +41,8 @@
             <artifactId>minio</artifactId>
         </dependency>
     </dependencies>
+
+
     <build>
         <plugins>
             <plugin>
@@ -50,7 +51,6 @@
                 <version>0.8.12</version>
                 <executions>
                     <execution>
-                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
@@ -70,10 +70,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
                 <configuration>
-                <skip>true</skip>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
             <plugin>
@@ -81,7 +82,6 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.10.1</version>
             <configuration>
-                <!-- 对应你的 JDK 版本，比如 17 -->
                 <source>1.8</source>
                 <target>1.8</target>
                 <annotationProcessorPaths>
