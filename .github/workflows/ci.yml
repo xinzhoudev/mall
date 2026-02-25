@@ -28,6 +28,11 @@ jobs:
         image: mongo:4.4
         ports:
           - 27017:27017
+      rabbitmq:
+        image: rabbitmq:3.8
+        ports:
+          - 5672:5672
+        options: --health-cmd="rabbitmqctl status" --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
       - name: Checkout code
@@ -64,4 +69,8 @@ jobs:
           SPRING_DATA_MONGODB_HOST: 127.0.0.1
           SPRING_DATA_MONGODB_PORT: 27017
           SPRING_DATA_MONGODB_DATABASE: mall-portal
+          SPRING_RABBITMQ_HOST: 127.0.0.1
+          SPRING_RABBITMQ_PORT: 5672
+          SPRING_RABBITMQ_USERNAME: guest
+          SPRING_RABBITMQ_PASSWORD: guest
 
