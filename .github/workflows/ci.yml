@@ -59,7 +59,7 @@ jobs:
           SPRING_REDIS_PORT: 6379
 
       - name: Run tests
-        run: mvn test --projects !mall-search, !mall-portal
+        run: mvn test -pl '!mall-search,!mall-portal'
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
           SPRING_DATASOURCE_USERNAME: root
