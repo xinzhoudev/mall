@@ -24,6 +24,10 @@ jobs:
         ports:
           - 6379:6379
         options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
+      mongodb:
+        image: mongo:4.4
+        ports:
+          - 27017:27017
 
     steps:
       - name: Checkout code
@@ -57,4 +61,7 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: root
           SPRING_REDIS_HOST: 127.0.0.1
           SPRING_REDIS_PORT: 6379
+          SPRING_DATA_MONGODB_HOST: 127.0.0.1
+          SPRING_DATA_MONGODB_PORT: 27017
+          SPRING_DATA_MONGODB_DATABASE: mall-portal
 
