@@ -26,6 +26,7 @@ import com.macro.mall.model.OmsOrder;
 
 @SpringBootTest(classes = com.macro.mall.MallAdminApplication.class)
 @Transactional
+// @ContextConfiguration(classes = MallAdminApplication.class)
 public class OmsOrderServiceFsmTest {
     @Autowired
     // use the true realization.

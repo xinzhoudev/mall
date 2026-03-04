@@ -63,10 +63,10 @@ public class UmsMenuControllerMockTest {
 
     @Test
     public void testCreateMenuMock() throws Exception {
-        // 1. Mock service 返回 1（表示插入成功）
+        // 1. Mock service returns 1
         Mockito.when(menuService.create(any(UmsMenu.class))).thenReturn(1);
 
-        // 2. 发送 POST 请求
+        // 2.send post
         MvcResult result = mockMvc.perform(post("/menu/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testMenu)))
@@ -102,7 +102,7 @@ public class UmsMenuControllerMockTest {
         CommonResult<Integer> commonResult = objectMapper.readValue(
                 response, new TypeReference<CommonResult<Integer>>() {});
 
-        // 插入失败，code 不应为 200
+        // failed，code should not be 200
         assertNotEquals(200L, commonResult.getCode(), "Response code should not be 200 when creation fails");
         Mockito.verify(menuService, Mockito.times(1)).create(any(UmsMenu.class));
     }
@@ -277,10 +277,81 @@ public class UmsMenuControllerMockTest {
 
         assertNotEquals(200L, commonResult.getCode(), "修改失败时响应码不应为200");
         Mockito.verify(menuService, Mockito.times(1)).updateHidden(eq(1L), eq(1));
-    }
+        }
+
+        // part_5.
+        // Stubbing..
+        @Test
+        public void testGetMenuItemStubbed() throws Exception {
+                UmsMenu stubbedMenu = new UmsMenu();
+                stubbedMenu.setName("StubbedMenu");
+                stubbedMenu.setParentId(1L);
+                stubbedMenu.setHidden(1);
+                stubbedMenu.setSort(5);
+                stubbedMenu.setIcon("icon-stubbed");
+
+                Mockito.when(menuService.getItem(eq(2L))).thenReturn(stubbedMenu);
+
+                MvcResult result = mockMvc.perform(get("/menu/2"))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+                String response = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
+                CommonResult<UmsMenu> commonResult = objectMapper.readValue(
+                        response, new TypeReference<CommonResult<UmsMenu>>() {});
+
+                assertEquals(200L, commonResult.getCode());
+                assertEquals("StubbedMenu", commonResult.getData().getName(), "The menu should return after being after being stubbed");
+                assertEquals(1L, commonResult.getData().getParentId(), "bbed pa entId");
+                assertEquals(1, commonResult.getData().getHidden(), "bbed hi den va valueue");
+
+                Mockito.verify(menuService, Mockito.times(1)).getItem(eq(2L));
+        }
+
+        // Mockito Test Case.
+        @Test
+        public void testListMenusWithMocking() throws Exception {
+                // Arrange
+                UmsMenu menu1 = new UmsMenu();
+                menu1.setName("Menu A");
+                menu1.setParentId(0L);
+
+                UmsMenu menu2 = new UmsMenu();
+                menu2.setName("Menu B");
+                menu2.setParentId(0L);
+
+                List<UmsMenu> mockMenuList = Arrays.asList(menu1, menu2);
+
+                // Configure mock: when list(0L, 10, 2) is called, return mockMenuList
+                Mockito.when(menuService.list(eq(0L), eq(10), eq(2)))
+                        .thenReturn(mockMenuList);
+
+                // Act
+                MvcResult result = mockMvc.perform(get("/menu/list/0")
+                                .param("pageSize", "10")
+                                .param("pageNum", "2"))
+                        .andExpect(status().isOk())
+                        .andReturn();
+
+                String response = result.getResponse()
+                                        .getContentAsString(StandardCharsets.UTF_8);
+
+                // ===== Assert: State =====
+                assertNotNull(response, "Response should not be null");
+                assertTrue(response.contains("Menu A"), "Response should contain Menu A");
+                assertTrue(response.contains("Menu B"), "Response should contain Menu B");
+
+                // Assert: Behavior (only possible with Mocking)
+                // Verify the controller passed the CORRECT parameters to the service
+                Mockito.verify(menuService, Mockito.times(1))
+                        .list(eq(0L), eq(10), eq(2));
+
+                // Verify the controller NEVER called service with wrong parameters
+                Mockito.verify(menuService, Mockito.never())
+                        .list(eq(0L), eq(5), eq(1));
+        }
+
 }
-
-
 
 
 

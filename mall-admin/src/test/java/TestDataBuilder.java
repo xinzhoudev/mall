@@ -9,18 +9,14 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 测试数据构建器
- * 用于创建各种测试数据对象
  */
 public class TestDataBuilder {
 
     /**
-     * 创建商品参数对象 - 完整数据
      */
     public static PmsProductParam buildProductParam() {
         PmsProductParam param = new PmsProductParam();
         
-        // 基本信息 (继承自PmsProduct)
         param.setBrandId(1L);
         param.setProductCategoryId(1L);
         param.setName("测试商品");
@@ -39,7 +35,6 @@ public class TestDataBuilder {
         // // param.setRecommendStatus(0);
         param.setDeleteStatus(0);
         
-        // 扩展信息 (PmsProductParam特有)
         param.setProductLadderList(new ArrayList<>());
         param.setProductFullReductionList(new ArrayList<>());
         param.setMemberPriceList(new ArrayList<>());
@@ -52,11 +47,9 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建商品参数对象 - 最小必填项
      */
     public static PmsProductParam buildMinimalProductParam() {
         PmsProductParam param = new PmsProductParam();
-        // 仅设置核心必填字段
         param.setName("最小测试商品");
         param.setPrice(new BigDecimal("1.00"));
         param.setProductSn("MIN-SN-001");
@@ -64,7 +57,6 @@ public class TestDataBuilder {
         param.setVerifyStatus(0);
         param.setDeleteStatus(0);
         
-        // 初始化扩展列表为空
         param.setProductLadderList(new ArrayList<>());
         param.setProductFullReductionList(new ArrayList<>());
         param.setMemberPriceList(new ArrayList<>());
@@ -77,7 +69,6 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建商品查询参数 - 完整条件
      */
     public static PmsProductQueryParam buildProductQueryParam() {
         PmsProductQueryParam param = new PmsProductQueryParam();
@@ -91,7 +82,6 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建商品查询参数 - 仅关键词
      */
     public static PmsProductQueryParam buildQueryParamWithKeyword(String keyword) {
         PmsProductQueryParam param = new PmsProductQueryParam();
@@ -100,7 +90,6 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建商品查询参数 - 仅状态
      */
     public static PmsProductQueryParam buildQueryParamWithStatus(Integer publishStatus, Integer verifyStatus) {
         PmsProductQueryParam param = new PmsProductQueryParam();
@@ -110,19 +99,16 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建空查询参数
      */
     public static PmsProductQueryParam buildEmptyQueryParam() {
         return new PmsProductQueryParam();
     }
 
     /**
-     * 创建商品结果对象
      */
     public static PmsProductResult buildProductResult() {
         PmsProductResult result = new PmsProductResult();
         
-        // 设置商品基本信息 (继承自PmsProductParam)
         result.setBrandId(1L);
         result.setProductCategoryId(1L);
         result.setName("测试商品结果");
@@ -135,10 +121,8 @@ public class TestDataBuilder {
         result.setPublishStatus(1);
         result.setVerifyStatus(1);
         
-        // 设置PmsProductResult特有字段
         result.setCateParentId(0L);
         
-        // 设置关联数据列表
         result.setProductLadderList(new ArrayList<>());
         result.setProductFullReductionList(new ArrayList<>());
         result.setMemberPriceList(new ArrayList<>());
@@ -151,7 +135,6 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建商品结果对象 - 指定ID
      */
     public static PmsProductResult buildProductResultWithId(Long id) {
         PmsProductResult result = buildProductResult();
@@ -162,7 +145,6 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建商品对象
      */
     public static PmsProduct buildProduct(Long id) {
         PmsProduct product = new PmsProduct();
@@ -186,7 +168,6 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建商品列表
      */
     public static List<PmsProduct> buildProductList(int count) {
         List<PmsProduct> list = new ArrayList<>();
@@ -197,7 +178,6 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建ID列表
      */
     public static List<Long> buildIdList(int count) {
         List<Long> ids = new ArrayList<>();
@@ -208,7 +188,6 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建带特定状态的商品
      */
     public static PmsProduct buildProductWithStatus(Long id, Integer publishStatus, 
                                                      Integer verifyStatus, Integer deleteStatus) {
@@ -220,28 +199,24 @@ public class TestDataBuilder {
     }
 
     /**
-     * 创建未发布的商品
      */
     public static PmsProduct buildUnpublishedProduct(Long id) {
         return buildProductWithStatus(id, 0, 0, 0);
     }
 
     /**
-     * 创建已发布待审核的商品
      */
     public static PmsProduct buildPendingProduct(Long id) {
         return buildProductWithStatus(id, 1, 0, 0);
     }
 
     /**
-     * 创建已发布已审核的商品
      */
     public static PmsProduct buildPublishedProduct(Long id) {
         return buildProductWithStatus(id, 1, 1, 0);
     }
 
     /**
-     * 创建已删除的商品
      */
     public static PmsProduct buildDeletedProduct(Long id) {
         return buildProductWithStatus(id, 0, 0, 1);
